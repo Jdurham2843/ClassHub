@@ -1,3 +1,17 @@
 <html>
   <title>FlashBang</title>
+
+  <form action="">
+    <input id="add-deck-title" type="text" value = "" placeholder="Enter a title" />
+    <input id="add-deck" type="submit" value="Start New Deck" />
+  </form>
+
+  <table>
+    <th>FlashCard Decks</th>
+    {% for deck in decks %}
+      <tr>
+        <td>{{ deck.title }}</td>
+      </tr>
+    {% endfor %}
+  </table>
 </html>

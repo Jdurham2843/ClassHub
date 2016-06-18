@@ -17,7 +17,19 @@ class NewVisitorTest(LiveServerTestCase):
         self.browser.get('http://localhost:8000')
 
         # He notices that there is the word FlashBang in the title
-        # of the site
+        # of the site and on the page
         self.assertIn('FlashBang', self.browser.title)
+
+        # He sees a form area to add a new flashcard deck
+        addDeckButton = self.browser.find_element_by_id('add-deck')
+        addDeckTitle = self.browser.find_element_by_id('add-deck-title')
+
+        # Bob enters a title for his new deck, and clicks the button
+        addDeckTitle.send_keys('Deck #1')
+        addDeckButton.submit()
+
+        # Bob sees his new deck appear
+        deckTable = self.browser.find_element_by_tagname('table')
+        self.assertIn(deckTable, 'Deck #1')
 
         self.fail("Finish the test!")
