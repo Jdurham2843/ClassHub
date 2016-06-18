@@ -16,8 +16,8 @@ class NewVisitorTest(LiveServerTestCase):
         # Bob enters the Class Hub Website
         self.browser.get('http://localhost:8000')
 
-        # He notices that there is the word Class Hub in the title
+        # He notices that there is the word FlashBang in the title
         # of the site
-        self.assertIn('Class Hub', self.browser.title)
+        self.assertIn('FlashBang', self.browser.title)
 
         self.fail("Finish the test!")
