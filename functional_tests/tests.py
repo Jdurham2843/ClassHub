@@ -49,9 +49,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('Deck #1', deckTable)
 
         # Bob then clicks on Deck #1 and sees the new Deck page
-        '''deckLink = self.browser.find_element_by_id('deck-link-1')
+        deckLink = self.browser.find_element_by_id('deck-link-1')
         deckLink.click()
 
-        self.assertIn('Deck #1', self.browser.title)'''
+        self.assertIn('Deck #1', self.browser.title)
 
         self.fail("Finish the test!")
