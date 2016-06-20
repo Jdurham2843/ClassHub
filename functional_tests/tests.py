@@ -29,7 +29,7 @@ class NewVisitorTest(LiveServerTestCase):
         addDeckButton.submit()
 
         # Bob sees his new deck appear
-        deckTable = self.browser.find_element_by_tagname('table')
-        self.assertIn(deckTable, 'Deck #1')
+        deckTable = self.browser.find_element_by_tag_name('table').text
+        self.assertIn('Deck #1', deckTable)
 
         self.fail("Finish the test!")
