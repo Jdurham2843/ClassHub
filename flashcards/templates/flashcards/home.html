@@ -1,8 +1,9 @@
 <html>
   <title>FlashBang</title>
 
-  <form action="">
-    <input id="add-deck-title" type="text" value = "" placeholder="Enter a title" />
+  <form method=POST action="{% url 'add_deck' %}">
+    {% csrf_token %}
+    <input id="add-deck-title" name="add-deck-title" type="text" value = "" placeholder="Enter a title" />
     <input id="add-deck" type="submit" value="Start New Deck" />
   </form>
 

@@ -19,5 +19,6 @@ from flashcards import views as flashcards_views
 
 urlpatterns = [
     url(r'^$', flashcards_views.home_page, name='home'),
+    url(r'^flashcards/add_deck$', flashcards_views.add_deck, name='add_deck'),
     url(r'^admin/', admin.site.urls),
 ]

@@ -24,4 +24,24 @@ class DeckAndCardTests(TestCase):
         saved_deck_1 = saved_decks[1]
 
         self.assertEqual(saved_deck_0.title, 'Deck #1')
-        self.assertEqual(saved_deck_1.title, 'Deck #2') 
+        self.assertEqual(saved_deck_1.title, 'Deck #2')
+
+class NewDeckTest(TestCase):
+
+    def test_can_save_a_POST_request_for_a_new_deck(self):
+        response = self.client.post(
+            '/flashcards/add_deck',
+            data={'add-deck-title': 'Deck #1'}
+        )
+
+        self.assertEqual(Deck.objects.count(), 1)
+        new_deck = Deck.objects.first()
+        self.assertEqual(new_deck.title, 'Deck #1')
+
+    def test_redirects_to_home_page(self):
+        response = self.client.post(
+            'flashcards/add_deck',
+            data={'add-deck-title': 'Deck #1'}
+        )
+
+        self.assertRedirects(response, '/')
