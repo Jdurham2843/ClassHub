@@ -1,6 +1,5 @@
-<html>
-  <title>FlashBang</title>
-
+{% extends 'flashcards/base.html' %}
+{% block content %}
   <form method=POST action="{% url 'flashcards:add_deck' %}">
     {% csrf_token %}
     <input id="add-deck-title" name="add-deck-title" type="text" value = "" placeholder="Enter a title" />
@@ -11,8 +10,8 @@
     <th>FlashCard Decks</th>
     {% for deck in decks %}
       <tr>
-        <td><a href="">{{ deck.title }}</a></td>
+        <td><a id="deck-link-{{ forloop.counter }}"href="">{{ deck.title }}</a></td>
       </tr>
     {% endfor %}
   </table>
-</html>
+{% endblock %}
