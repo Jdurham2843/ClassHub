@@ -30,7 +30,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_can_start_a_deck_and_retrieve_it_later(self):
         # Bob enters the Class Hub Website
-        self.browser.get('http://localhost:8000')
+        self.browser.get('http://localhost:8081')
 
         # He notices that there is the word FlashBang in the title
         # of the site and on the page
