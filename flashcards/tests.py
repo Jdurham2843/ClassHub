@@ -30,7 +30,7 @@ class NewDeckTest(TestCase):
 
     def test_can_save_a_POST_request_for_a_new_deck(self):
         response = self.client.post(
-            '/flashcards/add_deck',
+            '/flashcards/add_deck/',
             data={'add-deck-title': 'Deck #1'}
         )
 
@@ -40,7 +40,7 @@ class NewDeckTest(TestCase):
 
     def test_redirects_to_home_page(self):
         response = self.client.post(
-            'flashcards/add_deck',
+            'flashcards/add_deck/',
             data={'add-deck-title': 'Deck #1'}
         )
 
