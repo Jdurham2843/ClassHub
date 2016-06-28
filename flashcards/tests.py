@@ -26,6 +26,17 @@ class DeckAndCardTests(TestCase):
         self.assertEqual(saved_deck_0.title, 'Deck #1')
         self.assertEqual(saved_deck_1.title, 'Deck #2')
 
+    def test_can_retrieve_html_for_deck_page(self):
+        Deck.objects.create(title='New Deck #1')
+        self.assertEqual(Deck.objects.count(), 1)
+        deckid = Deck.objects.first().id
+
+        response = self.client.post(
+            '/flashcards/' + str(deckid) + '/deck/',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('New Deck #1', response.content.decode())
+
 class NewDeckTest(TestCase):
 
     def test_can_save_a_POST_request_for_a_new_deck(self):

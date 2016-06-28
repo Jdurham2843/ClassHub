@@ -12,3 +12,7 @@ def home_page(request):
 def add_deck(request):
     Deck.objects.create(title=request.POST.get('add-deck-title'))
     return HttpResponseRedirect('/')
+
+def view_deck(request, id):
+    deck = Deck.objects.get(pk=id)
+    return render(request, 'flashcards/deckview.html', {'deck': deck})
