@@ -10,7 +10,7 @@
     <th>FlashCard Decks</th>
     {% for deck in decks %}
       <tr>
-        <td><a id="deck-link-{{ forloop.counter }}"href="">{{ deck.title }}</a></td>
+        <td><a id="deck-link-{{ forloop.counter }}"href="{% url 'flashcards:view_deck' deck.id %}">{{ deck.title }}</a></td>
       </tr>
     {% endfor %}
   </table>
