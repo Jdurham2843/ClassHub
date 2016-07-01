@@ -1,4 +1,7 @@
 {% extends 'flashcards/base.html' %}
 {% block content %}
 <div> {{ deck.title }}</div>
+<a href="{% url 'flashcards:add_card_menu' deck.id %}">
+  <button id="add-card-link">Add Some Cards!</button>
+</a>
 {% endblock %}
