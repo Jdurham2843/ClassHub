@@ -59,12 +59,12 @@ class NewVisitorTest(StaticLiveServerTestCase):
         addCard = self.browser.find_element_by_id('add-card-link')
         addCard.click()
         addCardTitle = self.browser.find_element_by_id('add-card-title')
-        self.assertIn('Add Card to Deck #1', addCardTitle.text)
-        frontSide1 = self.find_element_by_id('front-side-1')
+        self.assertIn('Add Cards to Deck #1', addCardTitle.text)
+        frontSide1 = self.browser.find_element_by_id('front-side-1')
         frontSide1.send_keys('front side test 1')
-        backSide1 = self.find_element_by_id('back-side-1')
+        backSide1 = self.browser.find_element_by_id('back-side-1')
         backSide1.send_keys('back side test 1')
-        submitCards = self.find_element_by_id('submit-cards')
+        submitCards = self.browser.find_element_by_id('submit-cards')
 
         # Bob is redirected to the deck page and see's his new card added
         cardTable = self.find_element_by_tag_name('table')
@@ -73,9 +73,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         # Bob decides to add two more cards to his deck
         addCard.click()
-        frontSide2 = self.find_element_by_id('front-side-1')
+        frontSide2 = self.browser.find_element_by_id('front-side-1')
         frontSide2.send_keys('front side test 2')
-        backSide2 = self.find_element_by_id('back-side-1')
+        backSide2 = self.browser.find_element_by_id('back-side-1')
         backSide2.send_keys('back side test 2')
 
         # Bob sees that he can add a third card without having to leave the add card page

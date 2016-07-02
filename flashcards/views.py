@@ -16,3 +16,7 @@ def add_deck(request):
 def view_deck(request, id):
     deck = Deck.objects.get(pk=id)
     return render(request, 'flashcards/deckview.html', {'deck': deck})
+
+def add_card_menu(request, id):
+    deck = Deck.objects.get(pk=id)
+    return render(request, 'flashcards/addcardmenu.html', {'deck': deck})
