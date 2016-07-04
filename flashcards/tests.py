@@ -83,15 +83,23 @@ class NewCardTest(TestCase):
         self.assertEqual(retrieve_card2.frontside, 'front side 2')
         self.assertEqual(retrieve_card2.backside, 'back side 2')
 
-    '''def test_can_add_card_to_deck(self):
+    def test_can_add_card_to_deck_from_POST_request(self):
         Deck.objects.create(title='New Deck #1')
         deck = Deck.objects.first()
         response = self.client.post(
-            'flashcards/' + deck.id +'/add_cards/',
+            'flashcards/' + str(deck.id) +'/add_cards/',
             data = {
                 'front-side-1': 'card front side 1',
                 'back-side-1': 'card back side 1',
                 'front-side-2': 'card front side 2',
                 'back-side-2': 'card back side 2',
             }
-        )'''
+        )
+        cards = Card.objects.all()
+
+        self.assertEqual(cards[0].frontside, 'card front side 1')
+        self.assertEqual(cards[0].backside, 'card back side 1')
+        self.assertEqual(cards[0]._deck, deck)
+        self.assertEqual(cards[1].frontside, 'card front side 2')
+        self.assertEqual(cards[1].backside, 'card back side 2')
+        self.assertEqual(cards[1]._deck, deck)
