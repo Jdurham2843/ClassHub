@@ -1,9 +1,10 @@
 {% extends 'flashcards/base.html' %}
 {% block content %}
 <h1 id="add-card-title">Add Cards to {{ deck.title }}</h1>
-<form action="{% url 'flashcards:add_cards' deck.id %}">
-  <input type="text" name="front-side-1" id="front-side-1" value="">
-  <input type="text" name="back-side-2" id="back-side-1" value="">
+<form method=POST action="{% url 'flashcards:add_cards' deck.id %}">
+  {% csrf_token %}
+  <input type="text" name="front-side-1" id="front-side-1">
+  <input type="text" name="back-side-1" id="back-side-1">
   <input type="submit" name="submit-cards" id="submit-cards" value="Submit">
 </form>
 {% endblock %}

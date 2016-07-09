@@ -15,7 +15,9 @@ def add_deck(request):
 
 def view_deck(request, id):
     deck = Deck.objects.get(pk=id)
-    return render(request, 'flashcards/deckview.html', {'deck': deck})
+    cards = Card.objects.filter(_deck=deck)
+    return render(request, 'flashcards/deckview.html', {'deck': deck,
+        'cards': cards})
 
 def add_card_menu(request, id):
     deck = Deck.objects.get(pk=id)
@@ -23,14 +25,21 @@ def add_card_menu(request, id):
 
 def add_cards(request, id):
     deck = Deck.objects.get(pk=id)
-    request_len = len(request.POST)
 
-    for i in range(0, request_len // 2):
-        front_key = 'front-side-' + str(i + 1)
-        back_key = 'back-side-' + str(i + 1)
-        front_side = request.POST[front_key]
+    count = 0
+    for key in request.POST.keys():
+        if 'back-side' in key or 'front-side' in key:
+            count += 1
+
+    request_len = count
+
+    for i in range(1, (request_len // 2) + 1):
+        front_key = 'front-side-' + str(i)
+        back_key = 'back-side-' + str(i)
+        front_side = request.POST.get(front_key, False)
         back_side = request.POST[back_key]
         if front_side and back_side:
             Card.objects.create(frontside=front_side, backside=back_side,
                 _deck=deck)
-    return redirect('/')
+
+    return redirect('/flashcards/' + str(id) +'/deck/')

@@ -29,13 +29,17 @@ class DeckAndCardTests(TestCase):
     def test_can_retrieve_html_for_deck_page(self):
         Deck.objects.create(title='New Deck #1')
         self.assertEqual(Deck.objects.count(), 1)
-        deckid = Deck.objects.first().id
+        deck = Deck.objects.first()
+        Card.objects.create(frontside='test 1', backside='test 1',
+            _deck=deck)
 
         response = self.client.post(
-            '/flashcards/' + str(deckid) + '/deck/',
+            '/flashcards/' + str(deck.id) + '/deck/',
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn('New Deck #1', response.content.decode())
+        self.assertIn('test 1', response.content.decode())
+        self.assertIn('test 1', response.content.decode())
 
     def test_add_card_page_navigates_to_right_template(self):
         Deck.objects.create(title='New Deck #1')
@@ -125,4 +129,3 @@ class NewCardTest(TestCase):
         self.assertEqual(cards[0].frontside, 'card front side 2')
         self.assertEqual(cards[0].backside, 'card back side 2')
         self.assertEqual(cards[0]._deck, deck)
-        

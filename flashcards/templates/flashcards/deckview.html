@@ -5,5 +5,10 @@
   <button id="add-card-link">Add Some Cards!</button>
 </a>
 <table>
+  {% for card in cards %}
+  <td>Card {{ forloop.counter }}</td>
+  <td>{{ card.frontside }}</td>
+  <td>{{ card.backside }}</td>
+  {% endfor %}
 </table>
 {% endblock %}
