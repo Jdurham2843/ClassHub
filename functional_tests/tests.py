@@ -65,9 +65,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         backSide1 = self.browser.find_element_by_id('back-side-1')
         backSide1.send_keys('back side test 1')
         submitCards = self.browser.find_element_by_id('submit-cards')
+        submitCards.click()
 
         # Bob is redirected to the deck page and see's his new card added
-        cardTable = self.find_element_by_tag_name('table')
+        cardTable = self.browser.find_element_by_tag_name('table')
         self.assertIn('front side test 1', cardTable.text)
         self.assertIn('back side test 1', cardTable.text)
 

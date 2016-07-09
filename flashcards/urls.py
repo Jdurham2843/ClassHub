@@ -7,4 +7,5 @@ urlpatterns =[
     url(r'^add_deck/$', views.add_deck, name='add_deck'),
     url(r'^(?P<id>[0-9]+)/deck/$', views.view_deck, name='view_deck'),
     url(r'^(?P<id>[0-9]+)/add_card_menu/$', views.add_card_menu, name='add_card_menu'),
+    url(r'^(?P<id>[0-9]+)/add_cards/$', views.add_cards, name='add_cards'),
 ]

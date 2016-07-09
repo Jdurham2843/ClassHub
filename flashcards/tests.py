@@ -61,7 +61,7 @@ class NewDeckTest(TestCase):
 
     def test_redirects_to_home_page(self):
         response = self.client.post(
-            'flashcards/add_deck/',
+            '/flashcards/add_deck/',
             data={'add-deck-title': 'Deck #1'}
         )
 
@@ -87,15 +87,17 @@ class NewCardTest(TestCase):
         Deck.objects.create(title='New Deck #1')
         deck = Deck.objects.first()
         response = self.client.post(
-            'flashcards/' + str(deck.id) +'/add_cards/',
+            '/flashcards/' + str(deck.id) + '/add_cards/',
             data = {
                 'front-side-1': 'card front side 1',
                 'back-side-1': 'card back side 1',
                 'front-side-2': 'card front side 2',
                 'back-side-2': 'card back side 2',
-            }
+            },
         )
+
         cards = Card.objects.all()
+        self.assertEqual(len(cards), 2)
 
         self.assertEqual(cards[0].frontside, 'card front side 1')
         self.assertEqual(cards[0].backside, 'card back side 1')
@@ -103,3 +105,24 @@ class NewCardTest(TestCase):
         self.assertEqual(cards[1].frontside, 'card front side 2')
         self.assertEqual(cards[1].backside, 'card back side 2')
         self.assertEqual(cards[1]._deck, deck)
+
+    def test_can_add_cards_that_are_complete_to_deck_from_POST_request(self):
+        Deck.objects.create(title='New Deck #1')
+        deck = Deck.objects.first()
+        response = self.client.post(
+            '/flashcards/' + str(deck.id) + '/add_cards/',
+            data = {
+                'front-side-1': '',
+                'back-side-1': 'card back side 1',
+                'front-side-2': 'card front side 2',
+                'back-side-2': 'card back side 2',
+            },
+        )
+
+        cards = Card.objects.all()
+        self.assertEqual(len(cards), 1)
+
+        self.assertEqual(cards[0].frontside, 'card front side 2')
+        self.assertEqual(cards[0].backside, 'card back side 2')
+        self.assertEqual(cards[0]._deck, deck)
+        
