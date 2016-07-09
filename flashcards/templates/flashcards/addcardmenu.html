@@ -7,4 +7,17 @@
   <input type="text" name="back-side-1" id="back-side-1">
   <input type="submit" name="submit-cards" id="submit-cards" value="Submit">
 </form>
+<button id="add-another-card" onclick='addNewTextField()'>
+  Add Another Card</button>
+<script>
+  var counter = 1
+  function addNewTextField() {
+    counter += 1;
+    $('form').append("<input type='text' name='front-side-" + counter +
+       "' id='front-side-" + counter +"' value=''>");
+    $('form').append("<input type='text' name='back-side-" + counter +
+       "' id='back-side-" + counter +"' value=''>");
+  }
+</script>
+
 {% endblock %}

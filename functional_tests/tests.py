@@ -73,6 +73,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('back side test 1', cardTable.text)
 
         # Bob decides to add two more cards to his deck
+        addCard = self.browser.find_element_by_id('add-card-link')
         addCard.click()
         frontSide2 = self.browser.find_element_by_id('front-side-1')
         frontSide2.send_keys('front side test 2')
@@ -83,22 +84,22 @@ class NewVisitorTest(StaticLiveServerTestCase):
         addAnotherCard = self.browser.find_element_by_id('add-another-card')
         addAnotherCard.click()
         addCardForm = self.browser.find_element_by_tag_name('form')
-        self.assertIn('front-side-2', addCardForm.text)
-        self.assertIn('back-side-2', addCardForm.text)
 
         # Bob adds a third card
         frontSide3 = self.browser.find_element_by_id('front-side-2')
         backSide3 = self.browser.find_element_by_id('back-side-2')
         frontSide3.send_keys('front side test 3')
         backSide3.send_keys('back side test 3')
+        submitCards = self.browser.find_element_by_id('submit-cards')
         submitCards.click()
 
         # Bob is redirected to the Deck page and sees his two new cards added to the page
-        self.assertIn('front test side 1', cardTable.text)
-        self.assertIn('back test side 1', cardTable.text)
-        self.assertIn('front test side 2', cardTable.text)
-        self.assertIn('back test side 2', cardTable.text)
-        self.assertIn('front test side 3', cardTable.text)
-        self.assertIn('back test side 3', cardTable.text)
+        cardTable = self.browser.find_element_by_tag_name('table')
+        self.assertIn('front side test 1', cardTable.text)
+        self.assertIn('back side test 1', cardTable.text)
+        self.assertIn('front side test 2', cardTable.text)
+        self.assertIn('back side test 2', cardTable.text)
+        self.assertIn('front side test 3', cardTable.text)
+        self.assertIn('back side test 3', cardTable.text)
 
         self.fail("Finish the test!")
