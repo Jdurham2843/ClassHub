@@ -102,4 +102,22 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('front side test 3', cardTable.text)
         self.assertIn('back side test 3', cardTable.text)
 
+        # Bob decides that he would like to update Card 1
+        card_1_link = self.browser.find_element_by_id('card-1')
+        card_1_link.click()
+        front_side = self.browser.find_element_by_id('front-side')
+        front_side.send_keys('change to front side')
+        back_side = self.browser.find_element_by_id('back-side')
+        back_side.send_keys('change to back side')
+        update_button = self.browser.find_element_by_id('update-button')
+        update_button.click()
+
+        # Bob sees his card updated on the main page
+        body_text = self.browser.find_element_by_tag_name('body')
+        self.assertIn('change to front side', body_text.text)
+        self.assertIn('change to back side', body_text.text)
+        self.assertNotIn('front side test 1', body_text.text)
+        self.assertNotIn('back side test 1', body_text.text)
+
+
         self.fail("Finish the test!")

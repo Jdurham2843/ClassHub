@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from flashcards.models import Deck, Card
 from django.core.urlresolvers import reverse
 
@@ -41,5 +41,27 @@ def add_cards(request, id):
         if front_side and back_side:
             Card.objects.create(frontside=front_side, backside=back_side,
                 _deck=deck)
+
+    return redirect('/flashcards/' + str(id) +'/deck/')
+
+def update_card(request, id):
+    card = Card.objects.get(pk=id)
+    frontside = request.POST.get('front-side', False)
+    backside = request.POST.get('back-side', False)
+
+    if frontside and backside:
+        card.frontside = frontside
+        card.backside = backside
+        card.save()
+
+    return redirect('/flashcards/' + str(card._deck.id) +'/deck/')
+
+def update_deck(request, id):
+    deck = Deck.objects.get(pk=id)
+    new_title = request.POST.get('deck-title', False)
+
+    if new_title:
+        deck.title = new_title
+        deck.save()
 
     return redirect('/flashcards/' + str(id) +'/deck/')

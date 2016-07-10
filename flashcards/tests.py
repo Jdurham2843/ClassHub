@@ -71,6 +71,20 @@ class NewDeckTest(TestCase):
 
         self.assertRedirects(response, '/')
 
+    def test_can_update_deck_title(self):
+        deck = Deck.objects.create(title='New Title')
+
+        response = self.client.post(
+            '/flashcards/' + str(deck.id) + '/update_deck/',
+            data = {
+                'deck-title': 'New New Title',
+            }
+        )
+
+        deck = Deck.objects.all()[0]
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(deck.title, 'New New Title')
+
 class NewCardTest(TestCase):
 
     def test_can_add_new_card(self):
@@ -129,3 +143,22 @@ class NewCardTest(TestCase):
         self.assertEqual(cards[0].frontside, 'card front side 2')
         self.assertEqual(cards[0].backside, 'card back side 2')
         self.assertEqual(cards[0]._deck, deck)
+
+    def test_can_update_text_on_card(self):
+        deck = Deck.objects.create()
+        card = Card.objects.create(frontside='front side 1',
+            backside='back side 1', _deck=deck)
+
+        response = self.client.post(
+            '/flashcards/' + str(card.id) + '/update_card/',
+            data = {
+                'front-side': 'change front side 1',
+                'back-side': 'change back side 1',
+            }
+        )
+
+        card = Card.objects.all()[0]
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(card.frontside, 'change front side 1')
+        self.assertEqual(card.backside, 'change back side 1')
