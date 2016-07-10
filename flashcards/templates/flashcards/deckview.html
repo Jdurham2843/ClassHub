@@ -1,12 +1,22 @@
 {% extends 'flashcards/base.html' %}
 {% block content %}
-<div> {{ deck.title }}</div>
+<h2 id="deck-title"> {{ deck.title }} </h2>
+<form method=POST action="{% url 'flashcards:update_deck' deck.id %}">
+  {% csrf_token %}
+  <input type='text' name='deck-title' id='change-deck-title'/>
+  <input type='submit' id='change-deck-button'/>
+</form>
 <a href="{% url 'flashcards:add_card_menu' deck.id %}">
   <button id="add-card-link">Add Some Cards!</button>
 </a>
 <table>
   {% for card in cards %}
-  <td>Card {{ forloop.counter }}</td>
+  <td>
+    <a id="card-{{ forloop.counter }}"
+    href="{% url 'flashcards:update_card_view' card.id %}">
+    Card {{ forloop.counter }}
+    </a>
+  </td>
   <td>{{ card.frontside }}</td>
   <td>{{ card.backside }}</td>
   {% endfor %}

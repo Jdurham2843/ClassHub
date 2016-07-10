@@ -81,7 +81,7 @@ class NewDeckTest(TestCase):
             }
         )
 
-        deck = Deck.objects.all()[0]
+        deck.refresh_from_db()
         self.assertEqual(response.status_code, 302)
         self.assertEqual(deck.title, 'New New Title')
 
@@ -157,7 +157,7 @@ class NewCardTest(TestCase):
             }
         )
 
-        card = Card.objects.all()[0]
+        card.refresh_from_db()
 
         self.assertEqual(response.status_code, 302)
         self.assertEqual(card.frontside, 'change front side 1')

@@ -1,4 +1,6 @@
 import sys
+import time
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import unittest
@@ -91,6 +93,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         frontSide3.send_keys('front side test 3')
         backSide3.send_keys('back side test 3')
         submitCards = self.browser.find_element_by_id('submit-cards')
+
         submitCards.click()
 
         # Bob is redirected to the Deck page and sees his two new cards added to the page
@@ -106,8 +109,10 @@ class NewVisitorTest(StaticLiveServerTestCase):
         card_1_link = self.browser.find_element_by_id('card-1')
         card_1_link.click()
         front_side = self.browser.find_element_by_id('front-side')
+        front_side.clear()
         front_side.send_keys('change to front side')
         back_side = self.browser.find_element_by_id('back-side')
+        back_side.clear()
         back_side.send_keys('change to back side')
         update_button = self.browser.find_element_by_id('update-button')
         update_button.click()
@@ -118,6 +123,16 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('change to back side', body_text.text)
         self.assertNotIn('front side test 1', body_text.text)
         self.assertNotIn('back side test 1', body_text.text)
+
+        # Bob would also like to update the title of his deck
+        change_title_box = self.browser.find_element_by_id('change-deck-title')
+        change_title_box.send_keys('New New Deck')
+        change_deck_button = self.browser.find_element_by_id('change-deck-button')
+        change_deck_button.click()
+
+        # Bob sees the new title of his deck
+        deck_title = self.browser.find_element_by_id('deck-title')
+        self.assertEquals(deck_title.text, 'New New Deck')
 
 
         self.fail("Finish the test!")

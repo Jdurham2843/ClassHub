@@ -56,6 +56,10 @@ def update_card(request, id):
 
     return redirect('/flashcards/' + str(card._deck.id) +'/deck/')
 
+def update_card_view(request, id):
+    card = Card.objects.get(pk=id)
+    return render(request, 'flashcards/updatecard.html', {'card': card})
+
 def update_deck(request, id):
     deck = Deck.objects.get(pk=id)
     new_title = request.POST.get('deck-title', False)

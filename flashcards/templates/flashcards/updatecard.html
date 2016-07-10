@@ -1,0 +1,10 @@
+{% extends 'flashcards/base.html' %}
+{% block content %}
+<h1>Edit Card</h1>
+<form method=POST action="{% url 'flashcards:update_card' card.id %}">
+  {% csrf_token %}
+  <input type='text' name='front-side' id='front-side' value='{{ card.frontside}}'/>
+  <input type='text' name='back-side' id='back-side' value='{{ card.backside}}'/>
+  <input type='submit' id='update-button'/>
+</form>
+{% endblock %}
