@@ -4,14 +4,19 @@
 <form method=POST action="{% url 'flashcards:update_deck' deck.id %}">
   {% csrf_token %}
   <input type='text' name='deck-title' id='change-deck-title'/>
-  <input type='submit' id='change-deck-button'/>
+  <input type='submit' id='change-deck-button' value='Change Deck Title'/>
 </form>
 <a href="{% url 'flashcards:add_card_menu' deck.id %}">
   <button id="add-card-link">Add Some Cards!</button>
 </a>
+
+<form method=POST action="{% url 'flashcards:delete_card' deck.id %}">
+  {% csrf_token %}
+<input type='submit' id='delete-card-button' value="Delete Card(s)"/>
 <table>
   {% for card in cards %}
-  <td>
+  <td><input type='checkbox' name='checks[]' id='checkbox-{{ card.id }}'
+       value='{{ card.id }}'/>
     <a id="card-{{ forloop.counter }}"
     href="{% url 'flashcards:update_card_view' card.id %}">
     Card {{ forloop.counter }}
@@ -21,4 +26,7 @@
   <td>{{ card.backside }}</td>
   {% endfor %}
 </table>
+</form>
+
+<a id='home-link' href="/">Go Back</a>
 {% endblock %}

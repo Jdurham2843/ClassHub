@@ -134,5 +134,27 @@ class NewVisitorTest(StaticLiveServerTestCase):
         deck_title = self.browser.find_element_by_id('deck-title')
         self.assertEquals(deck_title.text, 'New New Deck')
 
+        # Bob decides that he wants to delete a card from his deck
+        card_checkbox = self.browser.find_element_by_id('checkbox-1')
+        card_checkbox.click()
+        card_delete_button = self.browser.find_element_by_id('delete-card-button')
+        card_delete_button.click()
 
-        self.fail("Finish the test!")
+        # Bob no longer sees the card in the deck anymore
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertNotIn('change to front side', body.text)
+        self.assertNotIn('change to back side', body.text)
+
+        # Bob decides that he wants to the delete the deck
+        home_link = self.browser.find_element_by_id('home-link')
+        home_link.click()
+
+        deck_checkbox_1 = self.browser.find_element_by_id('deck-1-checkbox')
+        deck_checkbox_1.click()
+        delete_deck_button = self.browser.find_element_by_id('delete-deck-button')
+        delete_deck_button.click()
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertNotIn('New New Deck', body.text)
+
+        # Bob Logs off 

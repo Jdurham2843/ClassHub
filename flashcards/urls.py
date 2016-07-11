@@ -11,4 +11,6 @@ urlpatterns =[
     url(r'^(?P<id>[0-9]+)/update_card/$', views.update_card, name='update_card'),
     url(r'^(?P<id>[0-9]+)/update_card_view/$', views.update_card_view, name='update_card_view'),
     url(r'^(?P<id>[0-9]+)/update_deck/$', views.update_deck, name='update_deck'),
+    url(r'^(?P<id>[0-9]+)/delete_card/$', views.delete_card, name='delete_card'),
+    url(r'^delete_deck/$', views.delete_deck, name='delete_deck'),
 ]

@@ -50,6 +50,27 @@ class DeckAndCardTests(TestCase):
 
         self.assertIn('Add Cards to New Deck #1', response.content.decode())
 
+    def test_can_delete_deck_and_all_its_contents(self):
+        deck1 = Deck.objects.create(title='title1')
+        deck2 = Deck.objects.create(title='title2')
+        for i in range(0, 10):
+            Card.objects.create(frontside='front', backside='back', _deck=deck1)
+            Card.objects.create(frontside='front', backside='back', _deck=deck2)
+
+        self.assertEqual(len(Card.objects.filter(_deck=deck1)), 10)
+        self.assertEqual(len(Card.objects.filter(_deck=deck2)), 10)
+
+        response = self.client.post(
+            '/flashcards/delete_deck/',
+            data = {
+                'checks[]': [str(deck1.id), str(deck2.id)]
+            }
+        )
+
+        self.assertEqual(len(Card.objects.filter(_deck=deck1)), 0)
+        self.assertEqual(len(Card.objects.filter(_deck=deck2)), 0)
+        self.assertEqual(response.status_code, 302)
+
 
 class NewDeckTest(TestCase):
 
@@ -162,3 +183,18 @@ class NewCardTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(card.frontside, 'change front side 1')
         self.assertEqual(card.backside, 'change back side 1')
+
+    def test_can_delete_card_from_deck(self):
+        deck = Deck.objects.create(title='title')
+        card1 = Card.objects.create(frontside='front', backside='back', _deck=deck)
+        card2 = Card.objects.create(frontside='front', backside='back', _deck=deck)
+        card3 = Card.objects.create(frontside='front', backside='back', _deck=deck)
+
+        response = self.client.post(
+            '/flashcards/' + str(deck.id) + '/delete_card/',
+            data = {
+                'checks[]': [str(card1.id), str(card2.id), str(card3.id)],
+            }
+        )
+
+        self.assertFalse(Card.objects.all())

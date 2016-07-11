@@ -5,13 +5,20 @@
     <input id="add-deck-title" name="add-deck-title" type="text" value = "" placeholder="Enter a title" />
     <input id="add-deck" type="submit" value="Start New Deck" />
   </form>
-
+<form method=POST action="{% url 'flashcards:delete_deck' %}">
+  {% csrf_token %}
+  <input type='submit' name='deck-delete-button' id='delete-deck-button' value="Delete Deck(s)"/>
   <table>
     <th>FlashCard Decks</th>
     {% for deck in decks %}
       <tr>
-        <td><a id="deck-link-{{ forloop.counter }}"href="{% url 'flashcards:view_deck' deck.id %}">{{ deck.title }}</a></td>
+        <td>
+          <input type='checkbox' name='checks[]' id='deck-{{ deck.id }}-checkbox'
+                 value='{{ deck.id }}'/>
+          <a id="deck-link-{{ forloop.counter }}"href="{% url 'flashcards:view_deck' deck.id %}">{{ deck.title }}</a>
+        </td>
       </tr>
     {% endfor %}
   </table>
+</form>
 {% endblock %}

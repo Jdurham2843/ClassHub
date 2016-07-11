@@ -19,6 +19,26 @@ def view_deck(request, id):
     return render(request, 'flashcards/deckview.html', {'deck': deck,
         'cards': cards})
 
+def update_deck(request, id):
+    deck = Deck.objects.get(pk=id)
+    new_title = request.POST.get('deck-title', False)
+
+    if new_title:
+        deck.title = new_title
+        deck.save()
+
+    return redirect('/flashcards/' + str(id) +'/deck/')
+
+def delete_deck(request):
+    if request.method == "POST":
+        check_list = request.POST.getlist('checks[]', False)
+        if check_list:
+            for item in check_list:
+                deck = Deck.objects.get(pk=item)
+                Card.objects.filter(_deck=deck).delete()
+                deck.delete()
+    return redirect('/')
+
 def add_card_menu(request, id):
     deck = Deck.objects.get(pk=id)
     return render(request, 'flashcards/addcardmenu.html', {'deck': deck})
@@ -60,12 +80,13 @@ def update_card_view(request, id):
     card = Card.objects.get(pk=id)
     return render(request, 'flashcards/updatecard.html', {'card': card})
 
-def update_deck(request, id):
-    deck = Deck.objects.get(pk=id)
-    new_title = request.POST.get('deck-title', False)
 
-    if new_title:
-        deck.title = new_title
-        deck.save()
+def delete_card(request, id):
+    if request.method == "POST":
+        check_list = request.POST.getlist('checks[]', False)
+        if check_list:
+            for item in check_list:
+                Card.objects.get(pk=int(item)).delete()
+
 
     return redirect('/flashcards/' + str(id) +'/deck/')
