@@ -15,7 +15,7 @@
         <td>
           <input type='checkbox' name='checks[]' id='deck-{{ deck.id }}-checkbox'
                  value='{{ deck.id }}'/>
-          <a id="deck-link-{{ forloop.counter }}"href="{% url 'flashcards:view_deck' deck.id %}">{{ deck.title }}</a>
+          <a id="deck-link-{{ forloop.counter }}"href="{% url 'flashcards:view_deck' deck.pk %}">{{ deck.title }}</a>
         </td>
       </tr>
     {% endfor %}

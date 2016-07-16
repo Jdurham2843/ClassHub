@@ -6,7 +6,7 @@
   <input type='text' name='deck-title' id='change-deck-title'/>
   <input type='submit' id='change-deck-button' value='Change Deck Title'/>
 </form>
-<a href="{% url 'flashcards:add_card_menu' deck.id %}">
+<a href="{% url 'flashcards:add_cards' deck.id %}">
   <button id="add-card-link">Add Some Cards!</button>
 </a>
 
@@ -18,7 +18,7 @@
   <td><input type='checkbox' name='checks[]' id='checkbox-{{ card.id }}'
        value='{{ card.id }}'/>
     <a id="card-{{ forloop.counter }}"
-    href="{% url 'flashcards:update_card_view' card.id %}">
+    href="{% url 'flashcards:update_card' card.pk %}">
     Card {{ forloop.counter }}
     </a>
   </td>

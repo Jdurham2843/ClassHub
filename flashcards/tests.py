@@ -27,7 +27,7 @@ class DeckAndCardTests(TestCase):
             _deck=deck)
 
         response = self.client.get(
-            '/flashcards/' + str(deck.id) + '/deck/',
+            '/flashcards/' + str(deck.pk) + '/deck/',
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn('New Deck #1', response.content.decode())
@@ -36,9 +36,9 @@ class DeckAndCardTests(TestCase):
 
     def test_add_card_page_navigates_to_right_template(self):
         Deck.objects.create(title='New Deck #1')
-        deckid = Deck.objects.first().id
+        deckid = Deck.objects.first().pk
         response = self.client.get(
-            '/flashcards/' + str(deckid) +'/add_card_menu/',
+            '/flashcards/' + str(deckid) +'/add_cards/',
         )
 
         self.assertIn('Add Cards to New Deck #1', response.content.decode())

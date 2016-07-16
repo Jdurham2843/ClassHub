@@ -3,9 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from flashcards.models import Deck, Card
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
-
-# Create your views here.
 class IndexView(generic.ListView):
     template_name = 'flashcards/home.html'
     context_object_name = 'decks'
@@ -13,11 +12,11 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         return Deck.objects.all()
 
-
-def add_deck(request):
-    if request.POST.get('add-deck-title').strip():
-        Deck.objects.create(title=request.POST.get('add-deck-title'))
-    return redirect('/')
+class CreateDeckView(CreateView):
+    def post(self, request):
+        if request.POST.get('add-deck-title').strip():
+            Deck.objects.create(title=request.POST.get('add-deck-title'))
+        return redirect('/')
 
 class DeckView(generic.ListView):
     template_name = 'flashcards/deckview.html'
@@ -28,75 +27,76 @@ class DeckView(generic.ListView):
         return render(request, self.template_name, {'deck': deck,
             'cards': cards})
 
+class UpdateDeckView(UpdateView):
+    def post(self, request, pk):
+        deck = Deck.objects.get(pk=pk)
+        new_title = request.POST.get('deck-title', False)
 
-def update_deck(request, id):
-    deck = Deck.objects.get(pk=id)
-    new_title = request.POST.get('deck-title', False)
+        if new_title.strip():
+            deck.title = new_title
+            deck.save()
 
-    if new_title.strip():
-        deck.title = new_title
-        deck.save()
+        return redirect('/flashcards/' + str(pk) +'/deck/')
 
-    return redirect('/flashcards/' + str(id) +'/deck/')
-
-def delete_deck(request):
-    if request.method == "POST":
+class DeleteDeckView(DeleteView):
+    def post(self, request):
         check_list = request.POST.getlist('checks[]', False)
         if check_list:
             for item in check_list:
                 deck = Deck.objects.get(pk=item)
                 Card.objects.filter(_deck=deck).delete()
                 deck.delete()
-    return redirect('/')
+        return redirect('/')
 
-def add_card_menu(request, id):
-    deck = Deck.objects.get(pk=id)
-    return render(request, 'flashcards/addcardmenu.html', {'deck': deck})
+class AddCardView(CreateView):
+    def get(self, request, pk):
+        deck = Deck.objects.get(pk=pk)
+        return render(request, 'flashcards/addcardmenu.html', {'deck': deck})
 
-def add_cards(request, id):
-    deck = Deck.objects.get(pk=id)
+    def post(self, request, pk):
+            deck = Deck.objects.get(pk=pk)
 
-    count = 0
-    for key in request.POST.keys():
-        if 'back-side' in key or 'front-side' in key:
-            count += 1
+            count = 0
+            for key in request.POST.keys():
+                if 'back-side' in key or 'front-side' in key:
+                    count += 1
 
-    request_len = count
+            request_len = count
 
-    for i in range(1, (request_len // 2) + 1):
-        front_key = 'front-side-' + str(i)
-        back_key = 'back-side-' + str(i)
-        front_side = request.POST.get(front_key, False)
-        back_side = request.POST[back_key]
-        if front_side.strip() and back_side.strip():
-            Card.objects.create(frontside=front_side, backside=back_side,
-                _deck=deck)
+            for i in range(1, (request_len // 2) + 1):
+                front_key = 'front-side-' + str(i)
+                back_key = 'back-side-' + str(i)
+                front_side = request.POST.get(front_key, False)
+                back_side = request.POST[back_key]
+                if front_side.strip() and back_side.strip():
+                    Card.objects.create(frontside=front_side, backside=back_side,
+                        _deck=deck)
 
-    return redirect('/flashcards/' + str(id) +'/deck/')
+            return redirect('/flashcards/' + str(pk) +'/deck/')
 
-def update_card(request, id):
-    card = Card.objects.get(pk=id)
-    frontside = request.POST.get('front-side', False)
-    backside = request.POST.get('back-side', False)
+class UpdateCardView(UpdateView):
+    def get(self, request, pk):
+        card = Card.objects.get(pk=pk)
+        return render(request, 'flashcards/updatecard.html', {'card': card})
 
-    if frontside.strip() and backside.strip():
-        card.frontside = frontside
-        card.backside = backside
-        card.save()
+    def post(self, request, pk):
+        card = Card.objects.get(pk=pk)
+        frontside = request.POST.get('front-side', False)
+        backside = request.POST.get('back-side', False)
 
-    return redirect('/flashcards/' + str(card._deck.id) +'/deck/')
+        if frontside.strip() and backside.strip():
+            card.frontside = frontside
+            card.backside = backside
+            card.save()
 
-def update_card_view(request, id):
-    card = Card.objects.get(pk=id)
-    return render(request, 'flashcards/updatecard.html', {'card': card})
+        return redirect('/flashcards/' + str(card._deck.pk) +'/deck/')
 
-
-def delete_card(request, id):
-    if request.method == "POST":
+class DeleteCardView(DeleteView):
+    def post(self, request, pk):
         check_list = request.POST.getlist('checks[]', False)
         if check_list:
             for item in check_list:
                 Card.objects.get(pk=int(item)).delete()
 
 
-    return redirect('/flashcards/' + str(id) +'/deck/')
+        return redirect('/flashcards/' + str(pk) +'/deck/')
