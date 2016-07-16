@@ -1,14 +1,7 @@
 from django.test import TestCase
 from django.core.urlresolvers import resolve
-from flashcards.views import home_page
 from django.http import HttpRequest
 from flashcards.models import Deck, Card
-
-class HomePageTest(TestCase):
-
-    def test_root_url_resolves_to_home_page_view(self):
-        found = resolve('/')
-        self.assertEqual(found.func, home_page)
 
 class DeckAndCardTests(TestCase):
 
@@ -33,7 +26,7 @@ class DeckAndCardTests(TestCase):
         Card.objects.create(frontside='test 1', backside='test 1',
             _deck=deck)
 
-        response = self.client.post(
+        response = self.client.get(
             '/flashcards/' + str(deck.id) + '/deck/',
         )
         self.assertEqual(response.status_code, 200)

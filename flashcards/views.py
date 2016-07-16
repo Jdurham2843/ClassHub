@@ -2,23 +2,32 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from flashcards.models import Deck, Card
 from django.core.urlresolvers import reverse
+from django.views import generic
 
 
 # Create your views here.
-def home_page(request):
-    decks = Deck.objects.all()
-    return render(request, 'flashcards/home.html', {'decks': decks})
+class IndexView(generic.ListView):
+    template_name = 'flashcards/home.html'
+    context_object_name = 'decks'
+
+    def get_queryset(self):
+        return Deck.objects.all()
+
 
 def add_deck(request):
     if request.POST.get('add-deck-title').strip():
         Deck.objects.create(title=request.POST.get('add-deck-title'))
     return redirect('/')
 
-def view_deck(request, id):
-    deck = Deck.objects.get(pk=id)
-    cards = Card.objects.filter(_deck=deck)
-    return render(request, 'flashcards/deckview.html', {'deck': deck,
-        'cards': cards})
+class DeckView(generic.ListView):
+    template_name = 'flashcards/deckview.html'
+
+    def get(self, request, pk):
+        deck = Deck.objects.get(pk=pk)
+        cards = Card.objects.filter(_deck=deck)
+        return render(request, self.template_name, {'deck': deck,
+            'cards': cards})
+
 
 def update_deck(request, id):
     deck = Deck.objects.get(pk=id)
