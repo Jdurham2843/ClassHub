@@ -10,7 +10,8 @@ def home_page(request):
     return render(request, 'flashcards/home.html', {'decks': decks})
 
 def add_deck(request):
-    Deck.objects.create(title=request.POST.get('add-deck-title'))
+    if request.POST.get('add-deck-title').strip():
+        Deck.objects.create(title=request.POST.get('add-deck-title'))
     return redirect('/')
 
 def view_deck(request, id):
@@ -23,7 +24,7 @@ def update_deck(request, id):
     deck = Deck.objects.get(pk=id)
     new_title = request.POST.get('deck-title', False)
 
-    if new_title:
+    if new_title.strip():
         deck.title = new_title
         deck.save()
 
@@ -58,7 +59,7 @@ def add_cards(request, id):
         back_key = 'back-side-' + str(i)
         front_side = request.POST.get(front_key, False)
         back_side = request.POST[back_key]
-        if front_side and back_side:
+        if front_side.strip() and back_side.strip():
             Card.objects.create(frontside=front_side, backside=back_side,
                 _deck=deck)
 
@@ -69,7 +70,7 @@ def update_card(request, id):
     frontside = request.POST.get('front-side', False)
     backside = request.POST.get('back-side', False)
 
-    if frontside and backside:
+    if frontside.strip() and backside.strip():
         card.frontside = frontside
         card.backside = backside
         card.save()
