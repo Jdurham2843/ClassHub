@@ -16,7 +16,7 @@ class CreateDeckView(CreateView):
     def post(self, request):
         if request.POST.get('add-deck-title').strip():
             Deck.objects.create(title=request.POST.get('add-deck-title'))
-        return redirect('/')
+        return redirect('/flashcards/')
 
 class DeckView(generic.ListView):
     template_name = 'flashcards/deckview.html'
@@ -46,7 +46,7 @@ class DeleteDeckView(DeleteView):
                 deck = Deck.objects.get(pk=item)
                 Card.objects.filter(_deck=deck).delete()
                 deck.delete()
-        return redirect('/')
+        return redirect('/flashcards')
 
 class AddCardView(CreateView):
     def get(self, request, pk):

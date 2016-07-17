@@ -83,7 +83,7 @@ class NewDeckTest(TestCase):
             data={'add-deck-title': 'Deck #1'}
         )
 
-        self.assertRedirects(response, '/')
+        self.assertRedirects(response, '/flashcards/')
 
     def test_can_update_deck_title(self):
         deck = Deck.objects.create(title='New Title')

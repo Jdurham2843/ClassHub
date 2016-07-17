@@ -18,7 +18,6 @@ from django.contrib import admin
 from flashcards import views as flashcards_views
 
 urlpatterns = [
-    url(r'^$', flashcards_views.IndexView.as_view(), name='home'),
     url(r'^flashcards/', include('flashcards.urls')),
     url(r'^admin/', admin.site.urls),
 ]

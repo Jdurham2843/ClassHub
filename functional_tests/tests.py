@@ -32,7 +32,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_can_start_a_deck_and_retrieve_it_later(self):
         # Bob enters the Class Hub Website
-        self.browser.get('http://localhost:8081')
+        self.browser.get('http://localhost:8081/flashcards/')
 
         # He notices that there is the word FlashBang in the title
         # of the site and on the page
@@ -157,4 +157,4 @@ class NewVisitorTest(StaticLiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertNotIn('New New Deck', body.text)
 
-        # Bob Logs off 
+        # Bob Logs off

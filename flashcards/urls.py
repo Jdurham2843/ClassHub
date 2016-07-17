@@ -4,6 +4,7 @@ from . import views
 app_name = 'flashcards'
 
 urlpatterns =[
+    url(r'^$', views.IndexView.as_view(), name='home'),
     url(r'^add_deck/$', views.CreateDeckView.as_view(), name='add_deck'),
     url(r'^(?P<pk>[0-9]+)/deck/$', views.DeckView.as_view(), name='view_deck'),
     url(r'^(?P<pk>[0-9]+)/add_cards/$', views.AddCardView.as_view(), name='add_cards'),
