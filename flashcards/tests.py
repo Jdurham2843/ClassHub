@@ -2,10 +2,32 @@ from django.test import TestCase
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
 from flashcards.models import Deck, Card
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, get_user
+
+def create_login_user(testcase):
+    user = User.objects.create_user(username='testuser')
+    user.set_password('pass')
+    user.save()
+
+    user = authenticate(username=user.username, password='pass')
+
+    response = testcase.client.post(
+        '/login/',
+        data = {
+        'username': user.username,
+        'password': 'pass',
+        }
+    )
+
+    testcase.assertEqual(response.status_code, 302)
+    return user
+
 
 class DeckAndCardTests(TestCase):
 
     def test_can_save_and_retrieve_Decks_and_Cards(self):
+        user = create_login_user(self)
         deck_0 = Deck.objects.create(title='Deck #1')
         deck_0.save()
 
