@@ -30,15 +30,17 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def login(self):
+    def login(self, wtf, username, password):
         self.browser.get('http://localhost:8081/register/')
+        print(username, password)
 
         username = self.browser.find_element_by_id('id_username')
-        username.send_keys('bob')
+        username.send_keys(username.text)
         password = self.browser.find_element_by_id('id_password')
-        password.send_keys('bobby')
+        password.send_keys(password.text)
         email = self.browser.find_element_by_id('id_email')
-        email.send_keys('bob@example.com')
+        email.send_keys(username.text + '@example.com')
+        time.sleep(3)
 
         submit = self.browser.find_element_by_tag_name('button')
         submit.click()
@@ -48,9 +50,9 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
         self.browser.get('http://localhost:8081/login/')
         username = self.browser.find_element_by_id('id_username')
-        username.send_keys('bob')
+        username.send_keys(username)
         password = self.browser.find_element_by_id('id_password')
-        password.send_keys('bobby')
+        password.send_keys(password)
 
         submit = self.browser.find_element_by_tag_name('button')
         submit.click()
@@ -89,7 +91,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_can_start_a_deck_and_retrieve_it_later(self):
         # Bob enters the Class Hub Website
-        self.login()
+        self.login('bob', username='bob', password='bobpass')
         self.browser.get('http://localhost:8081/flashcards/')
 
         # He notices that there is the word FlashBang in the title
