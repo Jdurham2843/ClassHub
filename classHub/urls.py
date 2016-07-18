@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from flashcards import views as flashcards_views
+from flashcards import views
 
 urlpatterns = [
     url(r'^flashcards/', include('flashcards.urls')),
+    url(r'^register/$', views.UserRegisterView.as_view(), name='register'),
+    url(r'^login/$', views.UserLoginView.as_view(), name='login'),
     url(r'^admin/', admin.site.urls),
 ]

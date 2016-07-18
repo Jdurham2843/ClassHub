@@ -5,6 +5,61 @@ from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
+from django.contrib.auth import authenticate, login, logout
+from django.views.generic import View
+from .forms import UserRegisterForm, UserLoginForm
+
+class UserRegisterView(View):
+    form_class = UserRegisterForm
+    template_name = 'flashcards/register.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
+
+        if form.is_valid():
+            user = form.save(commit=False)
+
+            # cleaned (normalized) data
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user.set_password(password)
+            user.save()
+
+            # return User objects if credentials are correct
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return redirect('flashcards:home')
+
+        return render(request, self.template_name, {'form': form})
+
+class UserLoginView(View):
+    form_class = UserLoginForm
+    template_name = 'flashcards/login.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+
+        username = request.POST['username']
+        password = request.POST['password']
+
+        # return User objects if credentials are correct
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('flashcards:home')
+
+        return render(request, self.template_name, {'form': form})
+
 class IndexView(generic.ListView):
     template_name = 'flashcards/home.html'
     context_object_name = 'decks'

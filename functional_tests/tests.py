@@ -30,6 +30,35 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    def test_can_create_account_and_login(self):
+
+        self.browser.get('http://localhost:8081/register/')
+
+        username = self.browser.find_element_by_id('id_username')
+        username.send_keys('bob')
+        password = self.browser.find_element_by_id('id_password')
+        password.send_keys('bobby')
+        email = self.browser.find_element_by_id('id_email')
+        email.send_keys('bob@example.com')
+
+        submit = self.browser.find_element_by_tag_name('button')
+        submit.click()
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('FlashCard Decks', body.text)
+
+        self.browser.get('http://localhost:8081/login/')
+        username = self.browser.find_element_by_id('id_username')
+        username.send_keys('bob')
+        password = self.browser.find_element_by_id('id_password')
+        password.send_keys('bobby')
+
+        submit = self.browser.find_element_by_tag_name('button')
+        submit.click()
+
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('FlashCard Decks', body.text)
+
     def test_can_start_a_deck_and_retrieve_it_later(self):
         # Bob enters the Class Hub Website
         self.browser.get('http://localhost:8081/flashcards/')
