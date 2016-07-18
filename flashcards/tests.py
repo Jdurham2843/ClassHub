@@ -42,6 +42,7 @@ class DeckAndCardTests(TestCase):
         self.assertEqual(saved_deck_1.title, 'Deck #2')
 
     def test_can_retrieve_html_for_deck_page(self):
+        user = create_login_user(self)
         Deck.objects.create(title='New Deck #1')
         self.assertEqual(Deck.objects.count(), 1)
         deck = Deck.objects.first()
@@ -57,6 +58,7 @@ class DeckAndCardTests(TestCase):
         self.assertIn('test 1', response.content.decode())
 
     def test_add_card_page_navigates_to_right_template(self):
+        user = create_login_user(self)
         Deck.objects.create(title='New Deck #1')
         deckid = Deck.objects.first().pk
         response = self.client.get(
@@ -66,6 +68,7 @@ class DeckAndCardTests(TestCase):
         self.assertIn('Add Cards to New Deck #1', response.content.decode())
 
     def test_can_delete_deck_and_all_its_contents(self):
+        user = create_login_user(self)
         deck1 = Deck.objects.create(title='title1')
         deck2 = Deck.objects.create(title='title2')
         for i in range(0, 10):
@@ -90,6 +93,7 @@ class DeckAndCardTests(TestCase):
 class NewDeckTest(TestCase):
 
     def test_can_save_a_POST_request_for_a_new_deck(self):
+        user = create_login_user(self)
         response = self.client.post(
             '/flashcards/add_deck/',
             data={'add-deck-title': 'Deck #1'}
@@ -100,6 +104,7 @@ class NewDeckTest(TestCase):
         self.assertEqual(new_deck.title, 'Deck #1')
 
     def test_redirects_to_home_page(self):
+        user = create_login_user(self)
         response = self.client.post(
             '/flashcards/add_deck/',
             data={'add-deck-title': 'Deck #1'}
@@ -108,6 +113,7 @@ class NewDeckTest(TestCase):
         self.assertRedirects(response, '/flashcards/')
 
     def test_can_update_deck_title(self):
+        user = create_login_user(self)
         deck = Deck.objects.create(title='New Title')
 
         response = self.client.post(
@@ -124,6 +130,7 @@ class NewDeckTest(TestCase):
 class NewCardTest(TestCase):
 
     def test_can_add_new_card(self):
+        user = create_login_user(self)
         deck = Deck.objects.create()
         card1 = Card.objects.create(frontside='front side 1',
             backside='back side 1', _deck=deck)
@@ -138,6 +145,7 @@ class NewCardTest(TestCase):
         self.assertEqual(retrieve_card2.backside, 'back side 2')
 
     def test_can_add_card_to_deck_from_POST_request(self):
+        user = create_login_user(self)
         Deck.objects.create(title='New Deck #1')
         deck = Deck.objects.first()
         response = self.client.post(
@@ -161,6 +169,7 @@ class NewCardTest(TestCase):
         self.assertEqual(cards[1]._deck, deck)
 
     def test_can_add_cards_that_are_complete_to_deck_from_POST_request(self):
+        user = create_login_user(self)
         Deck.objects.create(title='New Deck #1')
         deck = Deck.objects.first()
         response = self.client.post(
@@ -181,6 +190,7 @@ class NewCardTest(TestCase):
         self.assertEqual(cards[0]._deck, deck)
 
     def test_can_update_text_on_card(self):
+        user = create_login_user(self)
         deck = Deck.objects.create()
         card = Card.objects.create(frontside='front side 1',
             backside='back side 1', _deck=deck)
@@ -200,6 +210,7 @@ class NewCardTest(TestCase):
         self.assertEqual(card.backside, 'change back side 1')
 
     def test_can_delete_card_from_deck(self):
+        user = create_login_user(self)
         deck = Deck.objects.create(title='title')
         card1 = Card.objects.create(frontside='front', backside='back', _deck=deck)
         card2 = Card.objects.create(frontside='front', backside='back', _deck=deck)

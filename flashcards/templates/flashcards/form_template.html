@@ -5,5 +5,6 @@
     </div>
     <label>{{ field.label_tag }}</label>
     <div>{{ field }} </div>
+    <input type="hidden" name="next" value="{{ request.GET.next }}" />
   </div>
 {% endfor %}

@@ -56,7 +56,8 @@ class UserLoginView(View):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return redirect('flashcards:home')
+                redirect_url = request.POST.get('next', False) or 'flashcards:home'
+                return redirect(redirect_url)
 
         return render(request, self.template_name, {'form': form})
 
