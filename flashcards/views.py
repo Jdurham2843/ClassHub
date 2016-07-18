@@ -61,6 +61,15 @@ class UserLoginView(View):
 
         return render(request, self.template_name, {'form': form})
 
+class UserLogoutView(View):
+
+    def get(self, request):
+        try:
+            logout(request)
+            return redirect('login')
+        except:
+            return Http404()
+
 class IndexView(generic.ListView):
     template_name = 'flashcards/home.html'
     context_object_name = 'decks'

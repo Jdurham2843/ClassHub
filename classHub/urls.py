@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'^flashcards/', include('flashcards.urls')),
     url(r'^register/$', views.UserRegisterView.as_view(), name='register'),
     url(r'^login/$', views.UserLoginView.as_view(), name='login'),
+    url(r'^logout/$', views.UserLogoutView.as_view(), name='logout'),
     url(r'^admin/', admin.site.urls),
 ]

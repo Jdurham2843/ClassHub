@@ -1,5 +1,6 @@
 {% extends 'flashcards/base.html' %}
 {% block content %}
+<h1>Login</h1>
 <form role="form" action="" method=POST>
   {% csrf_token %}
   {% include 'flashcards/form_template.html' %}

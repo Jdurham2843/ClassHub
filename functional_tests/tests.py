@@ -216,3 +216,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertNotIn('New New Deck', body.text)
 
         # Bob Logs off
+        logout_button = self.browser.find_element_by_id('logout-button')
+        logout_button.click()
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Login', body.text)
