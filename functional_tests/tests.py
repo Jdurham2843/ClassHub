@@ -30,17 +30,15 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def login(self, wtf, username, password):
+    def register(self, username_data, password_data):
         self.browser.get('http://localhost:8081/register/')
-        print(username, password)
 
         username = self.browser.find_element_by_id('id_username')
-        username.send_keys(username.text)
+        username.send_keys(username_data)
         password = self.browser.find_element_by_id('id_password')
-        password.send_keys(password.text)
+        password.send_keys(password_data)
         email = self.browser.find_element_by_id('id_email')
-        email.send_keys(username.text + '@example.com')
-        time.sleep(3)
+        email.send_keys(username_data + '@example.com')
 
         submit = self.browser.find_element_by_tag_name('button')
         submit.click()
@@ -48,11 +46,12 @@ class NewVisitorTest(StaticLiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('FlashCard Decks', body.text)
 
+    def login(self, username_data, password_data):
         self.browser.get('http://localhost:8081/login/')
         username = self.browser.find_element_by_id('id_username')
-        username.send_keys(username)
+        username.send_keys(username_data)
         password = self.browser.find_element_by_id('id_password')
-        password.send_keys(password)
+        password.send_keys(password_data)
 
         submit = self.browser.find_element_by_tag_name('button')
         submit.click()
@@ -91,8 +90,8 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def test_can_start_a_deck_and_retrieve_it_later(self):
         # Bob enters the Class Hub Website
-        self.login('bob', username='bob', password='bobpass')
-        self.browser.get('http://localhost:8081/flashcards/')
+        self.register(username_data='bob', password_data='bobpass')
+        
 
         # He notices that there is the word FlashBang in the title
         # of the site and on the page
@@ -217,7 +216,47 @@ class NewVisitorTest(StaticLiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertNotIn('New New Deck', body.text)
 
+        # Bob decides to add one more deck before leaving
+        addDeckButton = self.browser.find_element_by_id('add-deck')
+        addDeckTitle = self.browser.find_element_by_id('add-deck-title')
+
+        # Bob enters a title for his new deck, and clicks the button
+        addDeckTitle.send_keys('Deck #1')
+        addDeckButton.submit()
+
         # Bob Logs off
+        logout_button = self.browser.find_element_by_id('logout-button')
+        logout_button.click()
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Login', body.text)
+
+        # Tom creates an account
+        self.register(username_data='tom', password_data='tomtom')
+
+        # Tom does not see any of Bob's Decks
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertNotIn('Deck #1', body.text)
+
+        # Tom adds a deck
+        addDeckButton = self.browser.find_element_by_id('add-deck')
+        addDeckTitle = self.browser.find_element_by_id('add-deck-title')
+        addDeckTitle.send_keys('Toms Deck')
+        addDeckButton.submit()
+
+        # Tom logs out
+        logout_button = self.browser.find_element_by_id('logout-button')
+        logout_button.click()
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Login', body.text)
+
+        # Bob logs back in
+        self.login('bob', 'bobpass')
+
+        # Bob does not see Tom's deck either
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertNotIn('Toms Deck', body.text)
+
+        # Bob logs out
         logout_button = self.browser.find_element_by_id('logout-button')
         logout_button.click()
         body = self.browser.find_element_by_tag_name('body')

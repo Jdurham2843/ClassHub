@@ -47,7 +47,7 @@ class UserLoginView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-
+        form = self.form_class(None)
         username = request.POST['username']
         password = request.POST['password']
 
@@ -72,15 +72,16 @@ class UserLogoutView(View):
 
 class IndexView(generic.ListView):
     template_name = 'flashcards/home.html'
-    context_object_name = 'decks'
 
-    def get_queryset(self):
-        return Deck.objects.all()
+    def get(self, request):
+        decks = Deck.objects.filter(_user=request.user)
+        return render(request, self.template_name, {'decks': decks})
 
 class CreateDeckView(CreateView):
     def post(self, request):
         if request.POST.get('add-deck-title').strip():
-            Deck.objects.create(title=request.POST.get('add-deck-title'))
+            Deck.objects.create(title=request.POST.get('add-deck-title'),
+                _user=request.user)
         return redirect('/flashcards/')
 
 class DeckView(generic.ListView):
@@ -88,6 +89,8 @@ class DeckView(generic.ListView):
 
     def get(self, request, pk):
         deck = Deck.objects.get(pk=pk)
+        if deck._user != request.user:
+            raise Http404()
         cards = Card.objects.filter(_deck=deck)
         return render(request, self.template_name, {'deck': deck,
             'cards': cards})
@@ -116,6 +119,8 @@ class DeleteDeckView(DeleteView):
 class AddCardView(CreateView):
     def get(self, request, pk):
         deck = Deck.objects.get(pk=pk)
+        if deck._user != request.user:
+            raise Http404()
         return render(request, 'flashcards/addcardmenu.html', {'deck': deck})
 
     def post(self, request, pk):
@@ -142,6 +147,8 @@ class AddCardView(CreateView):
 class UpdateCardView(UpdateView):
     def get(self, request, pk):
         card = Card.objects.get(pk=pk)
+        if card._deck._user != request.user:
+            raise Http404()
         return render(request, 'flashcards/updatecard.html', {'card': card})
 
     def post(self, request, pk):

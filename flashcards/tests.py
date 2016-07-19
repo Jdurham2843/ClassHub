@@ -43,7 +43,7 @@ class DeckAndCardTests(TestCase):
 
     def test_can_retrieve_html_for_deck_page(self):
         user = create_login_user(self)
-        Deck.objects.create(title='New Deck #1')
+        Deck.objects.create(title='New Deck #1', _user=user)
         self.assertEqual(Deck.objects.count(), 1)
         deck = Deck.objects.first()
         Card.objects.create(frontside='test 1', backside='test 1',
@@ -59,7 +59,7 @@ class DeckAndCardTests(TestCase):
 
     def test_add_card_page_navigates_to_right_template(self):
         user = create_login_user(self)
-        Deck.objects.create(title='New Deck #1')
+        Deck.objects.create(title='New Deck #1', _user=user)
         deckid = Deck.objects.first().pk
         response = self.client.get(
             '/flashcards/' + str(deckid) +'/add_cards/',
