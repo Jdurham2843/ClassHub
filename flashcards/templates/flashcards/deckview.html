@@ -15,7 +15,7 @@
 <input type='submit' id='delete-card-button' value="Delete Card(s)"/>
 <table>
   {% for card in cards %}
-  <td><input type='checkbox' name='checks[]' id='checkbox-{{ card.id }}'
+  <td><input type='checkbox' name='checks[]' id='checkbox-{{ forloop.counter }}'
        value='{{ card.id }}'/>
     <a id="card-{{ forloop.counter }}"
     href="{% url 'flashcards:update_card' card.pk %}">

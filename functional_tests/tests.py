@@ -30,6 +30,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
+    # helper functions
     def register(self, username_data, password_data):
         self.browser.get('http://localhost:8081/register/')
 
@@ -59,6 +60,33 @@ class NewVisitorTest(StaticLiveServerTestCase):
         body = self.browser.find_element_by_tag_name('body')
         self.assertIn('FlashCard Decks', body.text)
 
+    def create_deck(self, p_deck_title):
+        addDeckButton = self.browser.find_element_by_id('add-deck')
+        addDeckTitle = self.browser.find_element_by_id('add-deck-title')
+
+        addDeckTitle.send_keys(p_deck_title)
+        addDeckButton.submit()
+
+    def create_cards(self):
+        deckLink = self.browser.find_element_by_id('deck-link-1')
+        deckLink.click()
+
+        addCard = self.browser.find_element_by_id('add-card-link')
+        addCard.click()
+
+        addAnotherCard = self.browser.find_element_by_id('add-another-card')
+        for i in range(1, 11):
+            frontSide = self.browser.find_element_by_id('front-side-{}'.format(i))
+            frontSide.send_keys('front side test {}'.format(i))
+            backSide = self.browser.find_element_by_id('back-side-{}'.format(i))
+            backSide.send_keys('back side test {}'.format(i))
+            addAnotherCard.click()
+
+
+        submitCards = self.browser.find_element_by_id('submit-cards')
+        submitCards.click()
+
+    # tests
     def test_can_create_account_and_login(self):
 
         self.browser.get('http://localhost:8081/register/')
@@ -91,7 +119,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     def test_can_start_a_deck_and_retrieve_it_later(self):
         # Bob enters the Class Hub Website
         self.register(username_data='bob', password_data='bobpass')
-        
+
 
         # He notices that there is the word FlashBang in the title
         # of the site and on the page
@@ -257,6 +285,49 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertNotIn('Toms Deck', body.text)
 
         # Bob logs out
+        logout_button = self.browser.find_element_by_id('logout-button')
+        logout_button.click()
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Login', body.text)
+
+    def test_can_get_and_review_cards(self):
+        # John register his account
+        self.register('johnuser', 'johnpass')
+
+        # John creates a deck
+        self.create_deck('Deck #1')
+
+        # John adds ten cards to his deck
+        self.create_cards()
+
+        # John starts the review
+        review_button = self.browser.find_element_by_id('start-review')
+        review_button.click()
+
+        # John sees the front and back of each card, but not at the same time
+        for i in range(1, 11):
+            card = self.browser.find_element_by_id('card')
+            self.assertEqual(card.text, 'front side test %d'.format(i))
+            self.assertNotEqual('back side test %d'.format(i), card.text)
+
+            flip_button = self.browser.find_element_by_id('flip-card-button')
+            flip_button.click()
+
+            self.assertEqual(card.text, 'back side test %d'.format(i))
+            self.assertNotEqual('front side test %d'.format(i), card.text)
+
+            next_button = self.browser.find_element_by_id('flip-card-button')
+            next_button.click()
+
+        # John sees an option to end the review, and goes back to the Deck page
+        leave_button = self.browser.find_element_by_id('leave-button')
+        leave_button.click()
+
+        # John sees the deck page
+        body = self.browser.find_element_by_tag_name('body')
+        self.assertIn('Deck #1', body.text)
+
+        # John logs off
         logout_button = self.browser.find_element_by_id('logout-button')
         logout_button.click()
         body = self.browser.find_element_by_tag_name('body')
