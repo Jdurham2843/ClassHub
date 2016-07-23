@@ -11,7 +11,7 @@ console.log(data);
 <button id='next'>Next</button>
 <button id='flip'>Flip</button>
 <button id='reshuffle'>Reshuffle</button>
-<a href="{% url 'flashcards:view_deck' deck.id %}"><button>View Deck</button></a>
+<a href="{% url 'flashcards:view_deck' deck.id %}"><button id='view-deck'>View Deck</button></a>
 
 {% load staticfiles %}
 <script src="{% static 'flashcards/review.js' %}"></script>

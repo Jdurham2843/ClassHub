@@ -307,20 +307,21 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # John sees the front and back of each card, but not at the same time
         for i in range(1, 11):
             card = self.browser.find_element_by_id('card')
-            self.assertEqual(card.text, 'front side test %d'.format(i))
-            self.assertNotEqual('back side test %d'.format(i), card.text)
+            self.assertIn('front side test', card.text)
+            self.assertNotIn('back side test', card.text)
 
-            flip_button = self.browser.find_element_by_id('flip-card-button')
+            flip_button = self.browser.find_element_by_id('flip')
             flip_button.click()
 
-            self.assertEqual(card.text, 'back side test %d'.format(i))
-            self.assertNotEqual('front side test %d'.format(i), card.text)
+            self.assertIn('back side test', card.text)
+            self.assertNotIn('front side test', card.text)
 
-            next_button = self.browser.find_element_by_id('flip-card-button')
+            next_button = self.browser.find_element_by_id('next')
             next_button.click()
 
         # John sees an option to end the review, and goes back to the Deck page
-        leave_button = self.browser.find_element_by_id('leave-button')
+        self.browser.switch_to_alert().accept()
+        leave_button = self.browser.find_element_by_id('view-deck')
         leave_button.click()
 
         # John sees the deck page

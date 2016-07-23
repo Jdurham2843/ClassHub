@@ -26,6 +26,8 @@
   <td>{{ card.backside }}</td>
   {% endfor %}
 </table>
+
+<a id='start-review' href="{% url 'flashcards:review' deck.pk %}">Start Review</a>
 </form>
 
 <a id='home-link' href="/flashcards/">Go Back</a>
