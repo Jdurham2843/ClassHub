@@ -1,3 +1,5 @@
+import json
+
 from django.test import TestCase
 from django.core.urlresolvers import resolve
 from django.http import HttpRequest
@@ -88,7 +90,6 @@ class DeckAndCardTests(TestCase):
         self.assertEqual(len(Card.objects.filter(_deck=deck1)), 0)
         self.assertEqual(len(Card.objects.filter(_deck=deck2)), 0)
         self.assertEqual(response.status_code, 302)
-
 
 class NewDeckTest(TestCase):
 
@@ -224,3 +225,20 @@ class NewCardTest(TestCase):
         )
 
         self.assertFalse(Card.objects.all())
+
+class ReviewTest(TestCase):
+    def test_can_get_json_data(self):
+        user = create_login_user(self)
+        deck = Deck.objects.create(title='new deck', _user=user)
+        for i in range(0, 9):
+            front_side = 'front side {}'.format(i)
+            back_side = 'back side {}'.format(i)
+            Card.objects.create(frontside=front_side, backside=back_side,
+                _deck=deck)
+
+        response = self.client.get(
+            '/flashcards/' + str(deck.pk) + '/review/',
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(json.loads(response.context['json_data']))

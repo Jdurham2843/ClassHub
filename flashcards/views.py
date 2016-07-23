@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from flashcards.models import Deck, Card
 from django.core.urlresolvers import reverse
+from django.core import serializers
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
@@ -172,3 +173,16 @@ class DeleteCardView(DeleteView):
 
 
         return redirect('/flashcards/' + str(pk) +'/deck/')
+
+class ReviewDeckView(View):
+
+    def get(self, request, pk):
+        deck = Deck.objects.get(pk=pk)
+
+        if deck._user != request.user:
+            raise Http404()
+
+        cards = Card.objects.filter(_deck=deck)
+        json_data = serializers.serialize('json', cards)
+        return render(request, 'flashcards/review_view.html', {'deck': deck,
+            'json_data': json_data})

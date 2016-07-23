@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 app_name = 'flashcards'
 
-urlpatterns =[
+urlpatterns = [
     url(r'^$',
         login_required(views.IndexView.as_view()), name='home'),
     url(r'^add_deck/$', login_required(views.CreateDeckView.as_view()), name='add_deck'),
@@ -16,4 +16,5 @@ urlpatterns =[
     url(r'^(?P<pk>[0-9]+)/update_deck/$', login_required(views.UpdateDeckView.as_view()), name='update_deck'),
     url(r'^(?P<pk>[0-9]+)/delete_card/$', login_required(views.DeleteCardView.as_view()), name='delete_card'),
     url(r'^delete_deck/$', login_required(views.DeleteDeckView.as_view()), name='delete_deck'),
+    url(r'^(?P<pk>[0-9]+)/review/$', login_required(views.ReviewDeckView.as_view()) , name='review'),
 ]

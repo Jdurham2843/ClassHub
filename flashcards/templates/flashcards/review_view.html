@@ -1,0 +1,18 @@
+{% extends 'flashcards/base.html' %}
+{% block content %}
+<script>
+var data = JSON.parse('{{ json_data|safe }}');
+console.log(data);
+</script>
+
+<div id='card'>
+
+</div>
+<button id='next'>Next</button>
+<button id='flip'>Flip</button>
+<button id='reshuffle'>Reshuffle</button>
+<a href="{% url 'flashcards:view_deck' deck.id %}"><button>View Deck</button></a>
+
+{% load staticfiles %}
+<script src="{% static 'flashcards/review.js' %}"></script>
+{% endblock %}
