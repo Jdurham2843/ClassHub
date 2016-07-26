@@ -78,7 +78,11 @@ WSGI_APPLICATION = 'classHub.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'd8usk956i31d64',
+        'HOST': 'ec2-50-19-227-171.compute-1.amazonaws.com',
+        'USER': 'lnpnrhepbtabkt',
+        'PASSWORD': 'Wy3753XYgrQleJLits3xz84jCp',
+        'PORT': '5432',
     }
 }
 
