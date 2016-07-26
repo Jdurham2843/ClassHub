@@ -1,1 +1,1 @@
-web: gunicorn classHub/classHub.wsgi --log-file -
+web: gunicorn classHub.wsgi --log-file -
