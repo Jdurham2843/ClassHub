@@ -1,1 +1,1 @@
-web: gunicorn classHub.wsgi 
+web: sh -c 'cd [classHub && gunicorn classHub.wsgi:application'
