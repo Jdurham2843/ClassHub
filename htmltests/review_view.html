@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flashbang</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+  </head>
+  <script>
+  var data = JSON.parse('[{"model": "flashcards.card", "pk": 12, "fields": {"frontside": "front side 0", "backside": "back side 0", "_deck": 1}}, {"model": "flashcards.card", "pk": 13, "fields": {"frontside": "front side 1", "backside": "back side 1", "_deck": 1}}, {"model": "flashcards.card", "pk": 14, "fields": {"frontside": "front side 2", "backside": "back side 2", "_deck": 1}}, {"model": "flashcards.card", "pk": 15, "fields": {"frontside": "front side 3", "backside": "back side 3", "_deck": 1}}]');
+  console.log(data);
+  </script>
+
+  <div id='card'>
+
+  </div>
+  <button id='next'>Next</button>
+  <button id='flip'>Flip</button>
+  <button id='reshuffle'>Reshuffle</button>
+
+    <script>
+    function shuffle(data) {
+      for(var i = 0; i < data.length; i++){
+        var randNum = Math.floor(Math.random() * (data.length - 0) + 0);
+        var temp = data[i];
+        data[i] = data[randNum];
+        data[randNum] = temp;
+      }
+    }
+      shuffle(data);
+      var count = 0;
+      var side = 'frontside';
+      $('#card').html(data[count]['fields'][side]);
+
+      $('#next').click(function (){
+        side = 'frontside';
+        if (count < data.length - 1){
+          count++;
+          $('#card').html(data[count]['fields'][side]);
+        } else {
+          alert('End of Deck');
+        }
+      });
+
+      $('#flip').click(function (){
+          if (side == 'frontside'){
+            side = 'backside';
+            $('#card').html(data[count]['fields'][side]);
+          } else {
+            side = 'frontside';
+            $('#card').html(data[count]['fields'][side]);
+          }
+      });
+
+      $('#reshuffle').click(function(){
+        shuffle(data);
+        count = 0;
+        side = 'frontside';
+        $('#card').html(data[count]['fields'][side]);
+      })
+
+    </script>
+  </body>
+</html>

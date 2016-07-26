@@ -25,7 +25,7 @@ SECRET_KEY = 'g^q=9zzoao$s_i4@b+@-vg5v8mknm)pt@wkqeaz_y!64^r8_c8'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://flash-bang-2843.herokuapp.com/']
 
 
 # Application definition
@@ -124,5 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+#STATIC_ROOT = os.path.join((BASE_DIR), 'static')
 
 LOGIN_URL = '/login/'
