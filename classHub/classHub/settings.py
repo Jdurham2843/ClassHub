@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'classHub.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'd8usk956i31d64',
         'HOST': 'ec2-50-19-227-171.compute-1.amazonaws.com',
         'USER': 'lnpnrhepbtabkt',
