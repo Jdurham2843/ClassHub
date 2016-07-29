@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from . import setupdb
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'g^q=9zzoao$s_i4@b+@-vg5v8mknm)pt@wkqeaz_y!64^r8_c8'
+SECRET_KEY = setupdb.SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,12 +78,12 @@ WSGI_APPLICATION = 'classHub.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd8usk956i31d64',
-        'HOST': 'ec2-50-19-227-171.compute-1.amazonaws.com',
-        'USER': 'lnpnrhepbtabkt',
-        'PASSWORD': 'Wy3753XYgrQleJLits3xz84jCp',
-        'PORT': '5432',
+        'ENGINE': setupdb.django_db['ENGINE'],
+        'NAME': setupdb.django_db['NAME'],
+        'HOST': setupdb.django_db['HOST'],
+        'USER': setupdb.django_db['USER'],
+        'PASSWORD': setupdb.django_db['PASSWORD'],
+        'PORT': setupdb.django_db['PORT'],
     }
 }
 

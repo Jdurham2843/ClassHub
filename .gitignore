@@ -1,3 +1,5 @@
 db.sqlite3
 __pycache__
 *.pyc
+classHub/classHub/settings.py
+classHub/classHub/setupdb.py
