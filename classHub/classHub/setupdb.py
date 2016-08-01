@@ -8,6 +8,7 @@ if 'DYNO' in os.environ:
         'USER': 'lnpnrhepbtabkt',
         'PASSWORD': 'Wy3753XYgrQleJLits3xz84jCp',
         'PORT': '5432',
+        'STATIC_STORAGE': 'whitenoise.django.GzipManifestStaticFilesStorage'
     }
 else:
     django_db = {
@@ -17,6 +18,7 @@ else:
         'USER': '',
         'PASSWORD': '',
         'PORT': '',
+        'STATIC_STORAGE': None,
     }
 
 SECRET_KEY = 'g^q=9zzoao$s_i4@b+@-vg5v8mknm)pt@wkqeaz_y!64^r8_c8'

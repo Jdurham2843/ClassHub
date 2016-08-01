@@ -32,7 +32,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     # helper functions
     def register(self, username_data, password_data):
-        self.browser.get('http://localhost:8081/register/')
+        self.browser.get(self.server_url + '/register/')
 
         username = self.browser.find_element_by_id('id_username')
         username.send_keys(username_data)
@@ -48,7 +48,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('FlashCard Decks', body.text)
 
     def login(self, username_data, password_data):
-        self.browser.get('http://localhost:8081/login/')
+        self.browser.get(self.server_url + '/login/')
         username = self.browser.find_element_by_id('id_username')
         username.send_keys(username_data)
         password = self.browser.find_element_by_id('id_password')
@@ -89,7 +89,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
     # tests
     def test_can_create_account_and_login(self):
 
-        self.browser.get('http://localhost:8081/register/')
+        self.browser.get(self.server_url + '/register/')
 
         username = self.browser.find_element_by_id('id_username')
         username.send_keys('bob')
