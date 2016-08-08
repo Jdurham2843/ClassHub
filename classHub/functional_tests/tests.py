@@ -41,7 +41,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         email = self.browser.find_element_by_id('id_email')
         email.send_keys(username_data + '@example.com')
 
-        submit = self.browser.find_element_by_tag_name('button')
+        submit = self.browser.find_element_by_id('submit-button')
         submit.click()
 
         body = self.browser.find_element_by_tag_name('body')
@@ -54,7 +54,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         password = self.browser.find_element_by_id('id_password')
         password.send_keys(password_data)
 
-        submit = self.browser.find_element_by_tag_name('button')
+        submit = self.browser.find_element_by_id('submit-button')
         submit.click()
 
         body = self.browser.find_element_by_tag_name('body')
@@ -98,7 +98,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         email = self.browser.find_element_by_id('id_email')
         email.send_keys('bob@example.com')
 
-        submit = self.browser.find_element_by_tag_name('button')
+        submit = self.browser.find_element_by_id('submit-button')
         submit.click()
 
         body = self.browser.find_element_by_tag_name('body')
@@ -110,7 +110,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         password = self.browser.find_element_by_id('id_password')
         password.send_keys('bobby')
 
-        submit = self.browser.find_element_by_tag_name('button')
+        submit = self.browser.find_element_by_id('submit-button')
         submit.click()
 
         body = self.browser.find_element_by_tag_name('body')
@@ -157,7 +157,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         submitCards.click()
 
         # Bob is redirected to the deck page and see's his new card added
-        cardTable = self.browser.find_element_by_tag_name('table')
+        cardTable = self.browser.find_element_by_tag_name('body')
         self.assertIn('front side test 1', cardTable.text)
         self.assertIn('back side test 1', cardTable.text)
 
@@ -184,7 +184,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         submitCards.click()
 
         # Bob is redirected to the Deck page and sees his two new cards added to the page
-        cardTable = self.browser.find_element_by_tag_name('table')
+        cardTable = self.browser.find_element_by_tag_name('body')
         self.assertIn('front side test 1', cardTable.text)
         self.assertIn('back side test 1', cardTable.text)
         self.assertIn('front side test 2', cardTable.text)
@@ -278,7 +278,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         self.assertIn('Login', body.text)
 
         # Bob logs back in
-        self.login('bob', 'bobpass')
+        self.login(username_data='bob', password_data='bobpass')
 
         # Bob does not see Tom's deck either
         body = self.browser.find_element_by_tag_name('body')

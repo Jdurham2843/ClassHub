@@ -4,6 +4,6 @@
 <form role="form" action="" method=POST>
   {% csrf_token %}
   {% include 'flashcards/form_template.html' %}
-  <button type="submit">Submit</button>
+  <button id='submit-button' type="submit">Submit</button>
 </form>
 {% endblock %}

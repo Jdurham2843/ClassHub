@@ -48,7 +48,8 @@ class UserLoginView(View):
         return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        form = self.form_class(None)
+        form = self.form_class(request.POST)
+
         username = request.POST['username']
         password = request.POST['password']
 
@@ -59,6 +60,8 @@ class UserLoginView(View):
                 login(request, user)
                 redirect_url = request.POST.get('next', False) or 'flashcards:home'
                 return redirect(redirect_url)
+
+
 
         return render(request, self.template_name, {'form': form})
 
@@ -162,7 +165,7 @@ class UpdateCardView(UpdateView):
             card.backside = backside
             card.save()
 
-        return redirect('/flashcards/' + str(card._deck.pk) +'/deck/')
+        return redirect('/flashcards/' + str(card._deck.pk) +'/deck')
 
 class DeleteCardView(DeleteView):
     def post(self, request, pk):
