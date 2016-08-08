@@ -16,16 +16,20 @@
 <ul>
   {% for card in cards %}
   <li>
-  <div><input type='checkbox' name='checks[]' id='checkbox-{{ forloop.counter }}'
+  <div style="width: 25%; margin-right: 75%;">
+    <input type='checkbox' name='checks[]' id='checkbox-{{ forloop.counter }}'
        value='{{ card.id }}'/>
     <a id="card-{{ forloop.counter }}"
     href="{% url 'flashcards:update_card' card.pk %}">
     Card {{ forloop.counter }}
     </a>
   </div>
+  <br />
   <div>{{ card.frontside }}</div>
+  <br />
   <div>{{ card.backside }}</div>
 </li>
+<hr />
   {% endfor %}
 </ul>
 

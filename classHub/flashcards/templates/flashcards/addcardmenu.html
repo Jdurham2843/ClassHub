@@ -1,16 +1,18 @@
 {% extends 'flashcards/base.html' %}
 {% block content %}
 <h1 id="add-card-title">Add Cards to {{ deck.title }}</h1>
+
 <form method=POST action="{% url 'flashcards:add_cards' deck.id %}">
   {% csrf_token %}
   <div id='card-inputs'>
   <textarea name="front-side-1" id="front-side-1" cols="40" rows="5"></textarea>
   <textarea name="back-side-1" id="back-side-1" cols="40" rows="5"></textarea>
   </div>
+  <button type='button' id="add-another-card" onclick='addNewTextField()'>
+    Add Another Card</button>
   <input type="submit" name="submit-cards" id="submit-cards" value="Submit">
 </form>
-<button id="add-another-card" onclick='addNewTextField()'>
-  Add Another Card</button>
+
 <script>
   var counter = 1
   function addNewTextField() {
