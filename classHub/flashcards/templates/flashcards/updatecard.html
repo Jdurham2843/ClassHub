@@ -3,8 +3,8 @@
 <h1>Edit Card</h1>
 <form method=POST action="{% url 'flashcards:update_card' card.id %}">
   {% csrf_token %}
-  <input type='text' name='front-side' id='front-side' value='{{ card.frontside}}'/>
-  <input type='text' name='back-side' id='back-side' value='{{ card.backside}}'/>
+  <textarea name='front-side' id='front-side' cols="40" rows="5">{{ card.frontside }}</textarea>
+  <textarea name='back-side' id='back-side' cols="40" rows="5">{{ card.backside }}</textarea>
   <input type='submit' id='update-button' value='Edit Card'/>
 </form>
 {% endblock %}

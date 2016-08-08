@@ -3,8 +3,10 @@
 <h1 id="add-card-title">Add Cards to {{ deck.title }}</h1>
 <form method=POST action="{% url 'flashcards:add_cards' deck.id %}">
   {% csrf_token %}
-  <input type="text" name="front-side-1" id="front-side-1">
-  <input type="text" name="back-side-1" id="back-side-1">
+  <div id='card-inputs'>
+  <textarea name="front-side-1" id="front-side-1" cols="40" rows="5"></textarea>
+  <textarea name="back-side-1" id="back-side-1" cols="40" rows="5"></textarea>
+  </div>
   <input type="submit" name="submit-cards" id="submit-cards" value="Submit">
 </form>
 <button id="add-another-card" onclick='addNewTextField()'>
@@ -13,10 +15,11 @@
   var counter = 1
   function addNewTextField() {
     counter += 1;
-    $('form').append("<input type='text' name='front-side-" + counter +
-       "' id='front-side-" + counter +"' value=''>");
-    $('form').append("<input type='text' name='back-side-" + counter +
-       "' id='back-side-" + counter +"' value=''>");
+    $('#card-inputs').append("<hr />")
+    $('#card-inputs').append("<textarea name='front-side-" + counter +
+       "' id='front-side-" + counter +"' value='' cols='40' rows='5'></textarea>");
+    $('#card-inputs').append("<textarea name='back-side-" + counter +
+       "' id='back-side-" + counter +"' value='' cols='40' rows='5'></textarea>");
   }
 </script>
 
