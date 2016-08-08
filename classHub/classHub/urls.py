@@ -16,8 +16,10 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from flashcards import views
+from django.views.generic import RedirectView
 
 urlpatterns = [
+    url(r'^$', RedirectView.as_view(url='/flashcards/'), name='index'),
     url(r'^flashcards/', include('flashcards.urls')),
     url(r'^register/$', views.UserRegisterView.as_view(), name='register'),
     url(r'^login/$', views.UserLoginView.as_view(), name='login'),
